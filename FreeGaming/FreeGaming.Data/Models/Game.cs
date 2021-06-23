@@ -30,8 +30,8 @@
         [Url]
         public string ImageUrl { get; set; }
 
-        [Url]
-        public string TrailerUrl { get; set; }
+        [StringLength(11)]
+        public string TrailerId { get; set; }
 
         public int DeveloperId { get; set; }
 
@@ -42,5 +42,7 @@
         public Publisher Publisher { get; set; }
 
         public IEnumerable<GameGenre> Genres { get; set; } = new List<GameGenre>();
+
+        public IEnumerable<UserGame> Users { get; set; } = new List<UserGame>();
     }
 }
