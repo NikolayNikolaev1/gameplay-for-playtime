@@ -1,28 +1,15 @@
 ﻿namespace FreeGaming.Data.Models
 {
     using Enums;
+    using Microsoft.AspNetCore.Identity;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using static Constants;
+    using static Common.DataConstants;
 
-    public class User
+    public class User : IdentityUser
     {
-        public int Id { get; set; }
-
-        [MaxLength(16)]
-        [Required()]
-        public string Username { get; set; }
-
-        [MaxLength(255)]
-        [Required]
-        public string Email { get; set; }
-
-        [MaxLength(128)]
-        [Required]
-        public string Password { get; set; }
-
         [MaxLength(StringMaxLength)]
         public string FirstName { get; set; }
 

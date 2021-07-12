@@ -1,11 +1,15 @@
 ﻿namespace FreeGaming.Data
 {
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using Models;
     using System.Reflection;
 
-    public class FreeGamingDbContext : DbContext
+    public class FreeGamingDbContext : IdentityDbContext<User>
     {
+        public FreeGamingDbContext(DbContextOptions<FreeGamingDbContext> options)
+            : base(options) { }
+
         public DbSet<Developer> Developers { get; set; }
 
         public DbSet<Game> Games { get; set; }
@@ -14,13 +18,11 @@
 
         public DbSet<Publisher> Publisher { get; set; }
 
-        public DbSet<User> Users { get; set; }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
             base.OnModelCreating(builder);
+            // Using reflection for property relations configuration.
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

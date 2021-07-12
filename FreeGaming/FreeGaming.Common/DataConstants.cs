@@ -1,6 +1,6 @@
-﻿namespace FreeGaming.Data
+﻿namespace FreeGaming.Common
 {
-    public static class Constants
+    public static class DataConstants
     {
         public const double RangeMinValue = 0.0;
 

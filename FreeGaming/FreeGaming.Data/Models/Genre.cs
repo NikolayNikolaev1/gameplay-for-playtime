@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using static Constants;
+    using static Common.DataConstants;
 
     public class Genre
     {
