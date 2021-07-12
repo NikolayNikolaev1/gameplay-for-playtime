@@ -27,8 +27,7 @@
 
         public DateTime ReleaseDate { get; set; }
 
-        [Url]
-        public string ImageUrl { get; set; }
+        public byte[] Image { get; set; }
 
         [StringLength(11)]
         public string TrailerId { get; set; }

@@ -22,6 +22,8 @@
 
         public Country? Country { get; set; }
 
+        public byte[] Image { get; set; }
+
         // Rating for playing enogh time.
         public int Rating { get; set; }
 
