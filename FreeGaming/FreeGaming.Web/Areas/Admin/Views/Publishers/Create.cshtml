@@ -1,0 +1,39 @@
+﻿@model CreatePublisherFormModel
+
+@{
+    ViewData["Title"] = "Create Publisher";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div class="form-group row">
+                <label asp-for="Username" class="control-label col"></label>
+                <input asp-for="Username" class="form-control col" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Email" class="control-label col"></label>
+                <input asp-for="Email" class="form-control col" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Password" class="control-label col"></label>
+                <input asp-for="Password" class="form-control col" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="ConfirmPassword" class="control-label col"></label>
+                <input asp-for="ConfirmPassword" class="form-control col" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <input type="submit" value="Create" class="btn-lg btn-primary col" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

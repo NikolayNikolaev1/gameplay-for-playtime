@@ -25,8 +25,10 @@
         public byte[] Image { get; set; }
 
         // Rating for playing enogh time.
-        public int Rating { get; set; }
+        public int? Rating { get; set; }
 
         public IEnumerable<UserGame> Games { get; set; } = new List<UserGame>();
+
+        public IEnumerable<Game> PublishedGames { get; set; } = new List<Game>();
     }
 }

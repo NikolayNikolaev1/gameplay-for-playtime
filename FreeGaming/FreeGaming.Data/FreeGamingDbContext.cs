@@ -16,8 +16,6 @@
 
         public DbSet<Genre> Genres { get; set; }
 
-        public DbSet<Publisher> Publisher { get; set; }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

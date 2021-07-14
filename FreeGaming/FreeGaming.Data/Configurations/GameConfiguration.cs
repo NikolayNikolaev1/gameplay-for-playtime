@@ -1,8 +1,8 @@
 ﻿namespace FreeGaming.Data.Configurations
 {
-    using Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using Models;
 
     public class GameConfiguration : IEntityTypeConfiguration<Game>
     {
@@ -15,7 +15,7 @@
 
             game
                 .HasOne(g => g.Publisher)
-                .WithMany(p => p.Games)
+                .WithMany(d => d.PublishedGames)
                 .HasForeignKey(g => g.PublisherId);
         }
     }

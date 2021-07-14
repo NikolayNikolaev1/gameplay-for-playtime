@@ -8,7 +8,7 @@ namespace FreeGaming.Data.Migrations
     using Microsoft.EntityFrameworkCore.Migrations;
 
     [DbContext(typeof(FreeGamingDbContext))]
-    [Migration("20210712191650_InitialCreate")]
+    [Migration("20210714161822_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -16,7 +16,7 @@ namespace FreeGaming.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("FreeGaming.Data.Models.Developer", b =>
@@ -26,8 +26,8 @@ namespace FreeGaming.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -60,8 +60,8 @@ namespace FreeGaming.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("PublisherId")
-                        .HasColumnType("int");
+                    b.Property<string>("PublisherId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
@@ -120,26 +120,6 @@ namespace FreeGaming.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
-                });
-
-            modelBuilder.Entity("FreeGaming.Data.Models.Publisher", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Publisher");
                 });
 
             modelBuilder.Entity("FreeGaming.Data.Models.User", b =>
@@ -201,7 +181,7 @@ namespace FreeGaming.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Rating")
+                    b.Property<int?>("Rating")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegistrationDate")
@@ -391,11 +371,9 @@ namespace FreeGaming.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FreeGaming.Data.Models.Publisher", "Publisher")
-                        .WithMany("Games")
-                        .HasForeignKey("PublisherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("FreeGaming.Data.Models.User", "Publisher")
+                        .WithMany("PublishedGames")
+                        .HasForeignKey("PublisherId");
 
                     b.Navigation("Developer");
 
@@ -508,14 +486,11 @@ namespace FreeGaming.Data.Migrations
                     b.Navigation("Games");
                 });
 
-            modelBuilder.Entity("FreeGaming.Data.Models.Publisher", b =>
-                {
-                    b.Navigation("Games");
-                });
-
             modelBuilder.Entity("FreeGaming.Data.Models.User", b =>
                 {
                     b.Navigation("Games");
+
+                    b.Navigation("PublishedGames");
                 });
 #pragma warning restore 612, 618
         }

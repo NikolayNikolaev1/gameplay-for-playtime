@@ -10,6 +10,11 @@
             public const string Username = "Admin";
         }
 
+        public static class ErrorMessages
+        {
+
+        }
+
         public static class Roles
         {
             public const string Administrator = "Administrator";

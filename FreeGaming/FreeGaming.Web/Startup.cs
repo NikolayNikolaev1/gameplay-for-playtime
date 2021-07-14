@@ -12,6 +12,8 @@ namespace FreeGaming.Web
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
+    using static Common.DataConstants;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -35,7 +37,7 @@ namespace FreeGaming.Web
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequiredLength = 3;
+                    options.Password.RequiredLength = UserProperties.PasswordMinLength;
                 })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<FreeGamingDbContext>();
@@ -76,8 +78,13 @@ namespace FreeGaming.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "area",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
                 endpoints.MapRazorPages();
             });
         }

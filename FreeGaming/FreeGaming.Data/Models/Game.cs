@@ -36,9 +36,9 @@
 
         public Developer Developer { get; set; }
 
-        public int PublisherId { get; set; }
+        public string PublisherId { get; set; }
 
-        public Publisher Publisher { get; set; }
+        public User Publisher { get; set; }
 
         public IEnumerable<GameGenre> Genres { get; set; } = new List<GameGenre>();
 

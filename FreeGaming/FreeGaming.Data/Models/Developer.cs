@@ -14,7 +14,7 @@
         public string Name { get; set; }
 
         [Url]
-        public string ImageUrl { get; set; }
+        public byte[] Image { get; set; }
 
         public IEnumerable<Game> Games { get; set; } = new List<Game>();
     }

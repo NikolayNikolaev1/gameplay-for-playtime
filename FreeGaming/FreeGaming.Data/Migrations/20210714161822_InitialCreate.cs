@@ -43,8 +43,7 @@
                 name: "Rating",
                 table: "AspNetUsers",
                 type: "int",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "RegistrationDate",
@@ -60,7 +59,7 @@
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -82,20 +81,6 @@
                 });
 
             migrationBuilder.CreateTable(
-                name: "Publisher",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Publisher", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Games",
                 columns: table => new
                 {
@@ -109,21 +94,21 @@
                     Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     TrailerId = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: true),
                     DeveloperId = table.Column<int>(type: "int", nullable: false),
-                    PublisherId = table.Column<int>(type: "int", nullable: false)
+                    PublisherId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Games", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Games_AspNetUsers_PublisherId",
+                        column: x => x.PublisherId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Games_Developers_DeveloperId",
                         column: x => x.DeveloperId,
                         principalTable: "Developers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Games_Publisher_PublisherId",
-                        column: x => x.PublisherId,
-                        principalTable: "Publisher",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -214,9 +199,6 @@
 
             migrationBuilder.DropTable(
                 name: "Developers");
-
-            migrationBuilder.DropTable(
-                name: "Publisher");
 
             migrationBuilder.DropColumn(
                 name: "BirthDate",
