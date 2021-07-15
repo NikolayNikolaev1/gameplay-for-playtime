@@ -1,29 +1,24 @@
 ﻿namespace FreeGaming.Web.Areas.Admin.Controllers
 {
-    using FreeGaming.Data.Models;
-    using FreeGaming.Services.Admin;
-    using FreeGaming.Web.Areas.Admin.Models.Publishers;
+    using Data.Models;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Models.Publishers;
+    using Services.Admin;
     using System.Threading.Tasks;
 
     public class PublishersController : AdminBaseController
     {
-        private readonly IAdminUsersService adminUsersService;
+        private readonly IAdminUsersService adminUsers;
         private readonly UserManager<User> userManager;
 
         public PublishersController(
             IAdminUsersService adminUsersService,
             UserManager<User> userManager)
         {
-            this.adminUsersService = adminUsersService;
+            this.adminUsers = adminUsersService;
             this.userManager = userManager;
         }
-        public IActionResult All()
-        {
-            return null;
-        }
-
 
         public IActionResult Create() => View();
 
@@ -42,7 +37,15 @@
 
             }, formModel.Password);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> Index(int page = 1)
+            => View(new PublisherListingViewModel
+            {
+                Publishers = await this.adminUsers.AllPublishersAsync(page),
+                TotalPublishers = await this.adminUsers.CountAsync(),
+                CurrentPage = page
+            });
     }
 }

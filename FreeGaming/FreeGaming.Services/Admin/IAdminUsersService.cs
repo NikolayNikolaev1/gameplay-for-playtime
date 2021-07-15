@@ -6,8 +6,10 @@
 
     public interface IAdminUsersService
     {
-        Task<IEnumerable<AdminPublisherListingServiceModel>> AllPublishersAsync();
+        Task<IEnumerable<AdminPublisherListingServiceModel>> AllPublishersAsync(int page = 1);
 
         Task<IEnumerable<AdminUserListingServiceModel>> AllUsersAsync();
+
+        Task<int> CountAsync();
     }
 }

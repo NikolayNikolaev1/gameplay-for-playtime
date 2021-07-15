@@ -2,6 +2,8 @@
 {
     public static class WebConstants
     {
+        public const int UsersPageSize = 1;
+
         public static class AdminCredentials
         {
             // Testing credentials.

@@ -30,9 +30,9 @@
                 UserManager<User> userManager = serviceScope
                     .ServiceProvider
                     .GetService<UserManager<User>>();
-                RoleManager<IdentityRole> roleManager = serviceScope
+                RoleManager<Role> roleManager = serviceScope
                     .ServiceProvider
-                    .GetService<RoleManager<IdentityRole>>();
+                    .GetService<RoleManager<Role>>();
 
                 Task.Run(async () =>
                 {
@@ -50,14 +50,14 @@
 
         private static async Task CreateRoleAsync(
             UserManager<User> userManager,
-            RoleManager<IdentityRole> roleManager,
+            RoleManager<Role> roleManager,
             string roleName)
         {
             bool roleExists = await roleManager.RoleExistsAsync(roleName);
 
             if (!roleExists)
             {
-                await roleManager.CreateAsync(new IdentityRole
+                await roleManager.CreateAsync(new Role
                 {
                     Name = roleName
                 });

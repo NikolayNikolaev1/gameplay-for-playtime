@@ -27,6 +27,8 @@
         // Rating for playing enogh time.
         public int? Rating { get; set; }
 
+        public IEnumerable<UserRole> Roles { get; set; } = new List<UserRole>();
+
         public IEnumerable<UserGame> Games { get; set; } = new List<UserGame>();
 
         public IEnumerable<Game> PublishedGames { get; set; } = new List<Game>();

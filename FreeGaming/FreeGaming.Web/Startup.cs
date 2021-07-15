@@ -2,10 +2,10 @@ namespace FreeGaming.Web
 {
     using Data;
     using Data.Models;
+    using FreeGaming.Infrastructure.Mapping;
     using Infrastructure.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -39,13 +39,13 @@ namespace FreeGaming.Web
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequiredLength = UserProperties.PasswordMinLength;
                 })
-                .AddRoles<IdentityRole>()
+                .AddRoles<Role>()
                 .AddEntityFrameworkStores<FreeGamingDbContext>();
 
             services.AddControllersWithViews();
 
             services.AddDomainServices();
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(AutoMapperProfile));
 
             services.AddMvc(options =>
             {

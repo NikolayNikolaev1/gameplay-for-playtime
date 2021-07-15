@@ -1,11 +1,14 @@
 ﻿namespace FreeGaming.Data
 {
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using Models;
     using System.Reflection;
 
-    public class FreeGamingDbContext : IdentityDbContext<User>
+    public class FreeGamingDbContext : IdentityDbContext<User, Role, string,
+        IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>,
+        IdentityRoleClaim<string>, IdentityUserToken<string>>
     {
         public FreeGamingDbContext(DbContextOptions<FreeGamingDbContext> options)
             : base(options) { }
