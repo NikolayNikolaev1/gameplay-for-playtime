@@ -14,7 +14,7 @@
             public const int EmailMinLength = 3;
             public const int PasswordMaxLength = 128;
             public const int PasswordMinLength = 3;
-            public const int UserNameMaxLength = 256;
+            public const int UserNameMaxLength = 20;
             public const int UserNameMinLength = 3;
         }
             

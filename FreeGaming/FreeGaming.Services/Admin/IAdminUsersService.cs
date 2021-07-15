@@ -8,8 +8,10 @@
     {
         Task<IEnumerable<AdminPublisherListingServiceModel>> AllPublishersAsync(int page = 1);
 
-        Task<IEnumerable<AdminUserListingServiceModel>> AllUsersAsync();
+        Task<IEnumerable<AdminNormalUserListingServiceModel>> AllUsersAsync(int page = 1);
 
-        Task<int> CountAsync();
+        Task<IEnumerable<AdminBaseUserListingServiceModel>> AllAsync( int page = 1, string userRole = null);
+
+        Task<int> CountAsync(string userRole = null);
     }
 }

@@ -8,7 +8,7 @@
 
     public class PublisherListingViewModel
     {
-        public IEnumerable<AdminPublisherListingServiceModel> Publishers { get; set; }
+        public IEnumerable<AdminBaseUserListingServiceModel> Publishers { get; set; }
 
         public int TotalPublishers { get; set; }
 

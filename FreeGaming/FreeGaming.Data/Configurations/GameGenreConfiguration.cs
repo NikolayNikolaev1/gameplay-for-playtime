@@ -20,6 +20,13 @@
                 .HasOne(gg => gg.Genre)
                 .WithMany(g => g.Games)
                 .HasForeignKey(gg => gg.GenreId);
+
+            //gameGenre
+            //    .HasData(new GameGenre
+            //    {
+            //        GameId = 1,
+            //        GenreId = 1
+            //    });
         }
     }
 }

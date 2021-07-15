@@ -3,23 +3,24 @@
     using System.ComponentModel.DataAnnotations;
 
     using static Common.DataConstants.UserProperties;
+    using static Common.WebConstants.ErrorMessages;
 
     public class CreatePublisherFormModel
     {
         [Required]
-        [MaxLength(UserNameMaxLength)]
-        [MinLength(UserNameMinLength)]
+        [MaxLength(UserNameMaxLength, ErrorMessage = InvalidUserPropertyMaxLength)]
+        [MinLength(UserNameMinLength, ErrorMessage = InvalidUserPropertyMinLength)]
         public string Username { get; set; }
 
         [Required]
-        [MaxLength(EmailMaxLength)]
-        [MinLength(EmailMinLength)]
+        [MaxLength(EmailMaxLength, ErrorMessage = InvalidUserPropertyMaxLength)]
+        [MinLength(EmailMinLength, ErrorMessage = InvalidUserPropertyMinLength)]
         [EmailAddress]
         public string Email { get; set; }
 
         [Required]
-        [MaxLength(PasswordMaxLength)]
-        [MinLength(PasswordMinLength)]
+        [MaxLength(PasswordMaxLength, ErrorMessage = InvalidUserPropertyMaxLength)]
+        [MinLength(PasswordMinLength, ErrorMessage = InvalidUserPropertyMinLength)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

@@ -2,7 +2,7 @@
 {
     public static class WebConstants
     {
-        public const int UsersPageSize = 1;
+        public const int UsersPageSize = 10;
 
         public static class AdminCredentials
         {
@@ -14,7 +14,8 @@
 
         public static class ErrorMessages
         {
-
+            public const string InvalidUserPropertyMaxLength = "{0} max length can be {1} characters long.";
+            public const string InvalidUserPropertyMinLength = "{0} length must be atleast {1} characters long.";
         }
 
         public static class Roles

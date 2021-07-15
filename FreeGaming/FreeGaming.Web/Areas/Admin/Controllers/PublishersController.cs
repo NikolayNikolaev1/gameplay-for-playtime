@@ -7,6 +7,8 @@
     using Services.Admin;
     using System.Threading.Tasks;
 
+    using static Common.WebConstants;
+
     public class PublishersController : AdminBaseController
     {
         private readonly IAdminUsersService adminUsers;
@@ -30,12 +32,14 @@
                 return View(formModel);
             }
 
-            await this.userManager.CreateAsync(new User
+            User publisher = new User
             {
                 Email = formModel.Email,
                 UserName = formModel.Username,
+            };
 
-            }, formModel.Password);
+            await this.userManager.CreateAsync(publisher, formModel.Password);
+            await this.userManager.AddToRoleAsync(publisher, Roles.Publisher);
 
             return RedirectToAction(nameof(Index));
         }
@@ -43,8 +47,8 @@
         public async Task<IActionResult> Index(int page = 1)
             => View(new PublisherListingViewModel
             {
-                Publishers = await this.adminUsers.AllPublishersAsync(page),
-                TotalPublishers = await this.adminUsers.CountAsync(),
+                Publishers = await this.adminUsers.AllAsync(page, Roles.Publisher),
+                TotalPublishers = await this.adminUsers.CountAsync(Roles.Publisher),
                 CurrentPage = page
             });
     }

@@ -4,31 +4,33 @@
     ViewData["Title"] = "Create Publisher";
 }
 
-<div class="row">
+<h1>@ViewData["Title"]</h1>
+<hr />
+<div class="row justify-content-md-center">
     <div class="col-md-6">
         <form asp-action="Create">
             <div class="form-group row">
-                <label asp-for="Username" class="control-label col"></label>
-                <input asp-for="Username" class="form-control col" />
-                <span asp-validation-for="Username" class="text-danger"></span>
+                <label asp-for="Username" class="control-label col-md-4 text-right"></label>
+                <input asp-for="Username" class="form-control col-md-6" />
+                <span asp-validation-for="Username" class="col-md-auto offset-md-4 text-danger"></span>
             </div>
             <div class="form-group row">
-                <label asp-for="Email" class="control-label col"></label>
-                <input asp-for="Email" class="form-control col" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <label asp-for="Email" class="control-label col-md-4 text-right"></label>
+                <input asp-for="Email" class="form-control col-md-6" />
+                <span asp-validation-for="Email" class="col-md-auto offset-md-4 text-danger"></span>
             </div>
             <div class="form-group row">
-                <label asp-for="Password" class="control-label col"></label>
-                <input asp-for="Password" class="form-control col" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <label asp-for="Password" class="control-label col-md-4 text-right"></label>
+                <input asp-for="Password" class="form-control col-md-6" />
+                <span asp-validation-for="Password" class="col-md-auto offset-md-4 text-danger"></span>
             </div>
             <div class="form-group row">
-                <label asp-for="ConfirmPassword" class="control-label col"></label>
-                <input asp-for="ConfirmPassword" class="form-control col" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                <label asp-for="ConfirmPassword" class="control-label col-md-4 text-right"></label>
+                <input asp-for="ConfirmPassword" class="form-control col-md-6" />
+                <span asp-validation-for="ConfirmPassword" class="col-md-auto offset-md-4 text-danger"></span>
             </div>
             <div class="form-group row">
-                <input type="submit" value="Create" class="btn-lg btn-primary col" />
+                <input type="submit" value="Create" class="btn-lg btn-primary col-md-2 offset-6" />
             </div>
         </form>
     </div>

@@ -27,7 +27,8 @@ namespace FreeGaming.Web
         {
             services.AddDbContext<FreeGamingDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("DefaultConnection"))
+                .EnableSensitiveDataLogging());
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services
