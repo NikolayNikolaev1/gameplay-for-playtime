@@ -2,6 +2,7 @@
 {
     using AutoMapper;
     using Data;
+    using Enums;
     using Microsoft.EntityFrameworkCore;
     using Models;
     using System.Collections.Generic;
@@ -21,64 +22,110 @@
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<AdminBaseUserListingServiceModel>> AllAsync(int page = 1, string userRole = null)
+        /// <summary>
+        /// Method returns the desired user service model, based on what role it is presented in the parameters.
+        /// Also returns ordered property and given range by page.
+        /// </summary>
+        /// <typeparam name="TUserServiceModel">Generic type for the base user lsiting service model of the abstract class</typeparam>
+        /// <param name="role">Specified user role.</param>
+        /// <param name="property">Specified property to order.</param>
+        /// <param name="orderDirection">Specified order direction.</param>
+        /// <param name="page">Specified page of users.</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<TUserListingServiceModel>> AllAsync<TUserListingServiceModel>(
+            UserRoleType role,
+            UserProperty property,
+            OrderDirectionType orderDirection,
+            int page = 1)
+            where TUserListingServiceModel : AdminBaseListingServiceModel, new()
         {
-            if (userRole == Roles.Publisher)
+            var users = this.dbContext
+                .Users
+                .AsQueryable();
+
+            switch (orderDirection)
             {
-                return await this.mapper
-                    .ProjectTo<AdminPublisherListingServiceModel>(
-                        this.dbContext
-                        .Users
-                        .Where(u => u.Roles.Any(r => r.Role.Name == Roles.Publisher))
-                        .Skip((page - 1) * UsersPageSize)
-                        .Take(UsersPageSize))
-                    .ToListAsync();
+                case OrderDirectionType.Ascending:
+                    switch (property)
+                    {
+                        case UserProperty.Username:
+                            users = users
+                                .OrderBy(u => u.UserName)
+                                .AsQueryable();
+                            break;
+                        case UserProperty.Email:
+                            users = users
+                                .OrderBy(u => u.Email)
+                                .AsQueryable();
+                            break;
+                        case UserProperty.Raiting:
+                            users = users
+                                .OrderBy(u => u.Rating)
+                                .AsQueryable();
+                            break;
+                    }
+                    break;
+                case OrderDirectionType.Descending:
+                    switch (property)
+                    {
+                        case UserProperty.Username:
+                            users = users
+                                .OrderByDescending(u => u.UserName)
+                                .AsQueryable();
+                            break;
+                        case UserProperty.Email:
+                            users = users
+                                .OrderByDescending(u => u.Email)
+                                .AsQueryable();
+                            break;
+                        case UserProperty.Raiting:
+                            users = users
+                                .OrderByDescending(u => u.Rating)
+                                .AsQueryable();
+                            break;
+                    }
+                    break;
             }
 
-            return await this.mapper
-                .ProjectTo<AdminNormalUserListingServiceModel>(
-                    this.dbContext
-                    .Users
-                    .Where(u => !u.Roles.Any())
-                    .Skip((page - 1) * UsersPageSize)
-                    .Take(UsersPageSize))
-                .ToListAsync();
+            switch (role)
+            {
+                case UserRoleType.Player:
+                    return await this.mapper
+                        .ProjectTo<TUserListingServiceModel>(
+                            users.Where(u => !u.Roles.Any())
+                            .Skip((page - 1) * UsersPageSize)
+                            .Take(UsersPageSize))
+                            .ToListAsync();
+                case UserRoleType.Publisher:
+                    return await this.mapper
+                        .ProjectTo<TUserListingServiceModel>(
+                            users
+                            .Where(u => u.Roles.Any(r => r.Role.Name == Roles.Publisher))
+                            .Skip((page - 1) * UsersPageSize)
+                            .Take(UsersPageSize))
+                        .ToListAsync();
+                default:
+                    return null;
+            }
         }
 
-        public async Task<IEnumerable<AdminPublisherListingServiceModel>> AllPublishersAsync(int page = 1)
-            => await this.mapper
-            .ProjectTo<AdminPublisherListingServiceModel>(
-                this.dbContext
-                .Users
-                .Where(u => u.Roles.Any(r => r.Role.Name == Roles.Publisher))
-                .Skip((page - 1) * UsersPageSize)
-                .Take(UsersPageSize))
-            .ToListAsync();
-
-        public async Task<IEnumerable<AdminNormalUserListingServiceModel>> AllUsersAsync(int page = 1)
-            => await this.mapper
-            .ProjectTo<AdminNormalUserListingServiceModel>(
-                this.dbContext
-                .Users
-                .Where(u => !u.Roles.Any())
-                .Skip((page - 1) * UsersPageSize)
-                .Take(UsersPageSize))
-            .ToListAsync();
-
-        public async Task<int> CountAsync(string userRole = null)
+        public async Task<int> CountAsync(UserRoleType role)
         {
-            if (userRole == Roles.Publisher)
+            switch (role)
             {
-                return await this.dbContext
-                    .Users
-                    .Where(u => u.Roles.Any(r => r.Role.Name == Roles.Publisher))
-                    .CountAsync();
+                case UserRoleType.Player:
+                    return await this.dbContext
+                        .Users
+                        .Where(u => !u.Roles.Any())
+                        .CountAsync();
+                case UserRoleType.Publisher:
+                    return await this.dbContext
+                        .Users
+                        .Where(u => u.Roles.Any(r => r.Role.Name == Roles.Publisher))
+                        .CountAsync();
+                default:
+                    return 0;
             }
-
-            return await this.dbContext
-                .Users
-                .Where(u => !u.Roles.Any())
-                .CountAsync();
         }
     }
 }

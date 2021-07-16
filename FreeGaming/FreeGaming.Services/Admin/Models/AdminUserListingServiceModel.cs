@@ -3,7 +3,7 @@
     using Data.Models;
     using Infrastructure.Mapping;
 
-    public class AdminNormalUserListingServiceModel : AdminBaseUserListingServiceModel, IMapFrom<User>
+    public class AdminUserListingServiceModel : AdminBaseListingServiceModel, IMapFrom<User>
     {
         public int Rating { get; set; }
     }

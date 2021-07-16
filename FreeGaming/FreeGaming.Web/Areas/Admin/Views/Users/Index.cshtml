@@ -7,12 +7,36 @@
 
 <h1>@ViewData["Title"]</h1>
 <hr />
-<table class="table table-bordered">
+<table class="table table-bordered table-hover">
     <tr>
         <th>#</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Rating</th>
+        <th>
+            <a asp-area="Admin"
+               asp-controller="Users"
+               asp-action="Index"
+               asp-route-property="Username"
+               asp-route-page="@Model.CurrentPage"
+               asp-route-order="@(Model.OrderDirection == OrderDirectionType.Ascending ? "Descending" : "Ascending")"
+               class="btn btn-lg btn-block">Username</a>
+        </th>
+        <th>
+            <a asp-area="Admin"
+               asp-controller="Users"
+               asp-action="Index"
+               asp-route-property="Email"
+               asp-route-order="@(Model.OrderDirection == OrderDirectionType.Ascending ? "Descending" : "Ascending")"
+               asp-route-page="@Model.CurrentPage"
+               class="btn btn-lg btn-block">Email</a>
+        </th>
+        <th>
+            <a asp-area="Admin"
+               asp-controller="Users"
+               asp-action="Index"
+               asp-route-property="Raiting"
+               asp-route-order="@(Model.OrderDirection == OrderDirectionType.Ascending ? "Descending" : "Ascending")"
+               asp-route-page="@Model.CurrentPage"
+               class="btn btn-lg btn-block">Raiting</a>
+        </th>
     </tr>
     @foreach (var user in Model.Users)
     {
@@ -26,29 +50,12 @@
     }
 </table>
 
-
-@if (Model.TotalUsers >= Model.Users.Count())
-{
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="@(Model.CurrentPage == 1 ? "disabled" : string.Empty) page-item">
-                <a asp-area="Admin"
-                   asp-controller="Users"
-                   asp-action="Index"
-                   asp-route-page="@Model.PreviousPage"
-                   aria-label="Previous" class="page-link">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="@(Model.CurrentPage == Model.TotalPages ? "disabled" : string.Empty) page-item">
-                <a asp-area="Admin"
-                   asp-controller="Users"
-                   asp-action="Index"
-                   asp-route-page="@Model.NextPage"
-                   aria-label="Next" class="page-link">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-}
+@(await Html.PartialAsync("_PaginationPartial",
+    new ViewDataDictionary(ViewData)
+    {
+        { "total", Model.TotalUsers },
+        { "totalCount", Model.Users.Count()},
+        { "currentPage", Model.CurrentPage},
+        { "previousPage", Model.PreviousPage },
+        { "nextPage", Model.NextPage }
+    }))

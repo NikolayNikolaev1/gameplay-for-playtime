@@ -1,6 +1,7 @@
 ﻿namespace FreeGaming.Web.Areas.Admin.Models.Users
 {
     using Services.Admin.Models;
+    using Services.Enums;
     using System;
     using System.Collections.Generic;
 
@@ -8,7 +9,7 @@
 
     public class UserListingViewModel
     {
-        public IEnumerable<AdminNormalUserListingServiceModel> Users { get; set; }
+        public IEnumerable<AdminUserListingServiceModel> Users { get; set; }
 
         public int TotalUsers { get; set; }
 
@@ -24,5 +25,7 @@
             => this.CurrentPage == this.TotalPages
             ? this.TotalPages
             : this.CurrentPage + 1;
+
+        public OrderDirectionType OrderDirection { get; set; }
     }
 }

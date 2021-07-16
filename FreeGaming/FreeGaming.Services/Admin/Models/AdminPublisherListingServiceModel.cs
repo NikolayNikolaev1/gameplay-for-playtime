@@ -3,7 +3,7 @@
     using Data.Models;
     using Infrastructure.Mapping;
 
-    public class AdminPublisherListingServiceModel : AdminBaseUserListingServiceModel, IMapFrom<User>
+    public class AdminPublisherListingServiceModel : AdminBaseListingServiceModel, IMapFrom<User>
     {
     }
 }

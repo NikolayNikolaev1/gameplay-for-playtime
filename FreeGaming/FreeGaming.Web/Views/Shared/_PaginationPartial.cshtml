@@ -1,0 +1,25 @@
+﻿@if ((int)ViewData["total"] >= (int)ViewData["totalCount"])
+{
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="@((int)ViewData["currentPage"] == 1 ? "disabled" : string.Empty) page-item">
+                <a asp-area="Admin"
+                   asp-controller="Publishers"
+                   asp-action="Index"
+                   asp-route-page="@ViewData["previousPage"]"
+                   aria-label="Previous" class="page-link">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="@((int)ViewData["currentPage"] == Model.TotalPages ? "disabled" : string.Empty) page-item">
+                <a asp-area="Admin"
+                   asp-controller="Publishers"
+                   asp-action="Index"
+                   asp-route-page="@ViewData["nextPage"]"
+                   aria-label="Next" class="page-link">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+}

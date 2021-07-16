@@ -1,37 +1,31 @@
 ﻿namespace FreeGaming.Web.Areas.Admin.Controllers
 {
     using Data.Models;
+    using Infrastructure.Filters;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Models.Publishers;
-    using Services.Admin;
+    using Services.Admin.Models;
+    using Services.Enums;
     using System.Threading.Tasks;
 
     using static Common.WebConstants;
 
-    public class PublishersController : AdminBaseController
+    public class PublishersController : AdminBaseController<PublishersController>
     {
-        private readonly IAdminUsersService adminUsers;
         private readonly UserManager<User> userManager;
 
-        public PublishersController(
-            IAdminUsersService adminUsersService,
-            UserManager<User> userManager)
+        public PublishersController(UserManager<User> userManager)
         {
-            this.adminUsers = adminUsersService;
             this.userManager = userManager;
         }
 
         public IActionResult Create() => View();
 
         [HttpPost]
+        [ValidateModelState]
         public async Task<IActionResult> Create(CreatePublisherFormModel formModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(formModel);
-            }
-
             User publisher = new User
             {
                 Email = formModel.Email,
@@ -44,12 +38,19 @@
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Index(int page = 1)
+        [Route("/admin/publishers/{property?}/{order?}/{page?}")]
+        public async Task<IActionResult> Index(
+            string property = null, string order = "ascending", int page = 1)
             => View(new PublisherListingViewModel
             {
-                Publishers = await this.adminUsers.AllAsync(page, Roles.Publisher),
-                TotalPublishers = await this.adminUsers.CountAsync(Roles.Publisher),
-                CurrentPage = page
+                Publishers = await base.AdminUsers.AllAsync<AdminPublisherListingServiceModel>(
+                    UserRoleType.Publisher,
+                    base.GetUserProperty(property),
+                    base.GetOrderDirectionType(order),
+                    page),
+                TotalPublishers = await base.AdminUsers.CountAsync(UserRoleType.Publisher),
+                CurrentPage = page,
+                OrderDirection = base.GetOrderDirectionType(order)
             });
     }
 }

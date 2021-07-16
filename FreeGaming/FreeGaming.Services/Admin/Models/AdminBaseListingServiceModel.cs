@@ -1,6 +1,6 @@
 ﻿namespace FreeGaming.Services.Admin.Models
 {
-    public abstract class AdminBaseUserListingServiceModel
+    public abstract class AdminBaseListingServiceModel
     {
         public string Id { get; set; }
 
