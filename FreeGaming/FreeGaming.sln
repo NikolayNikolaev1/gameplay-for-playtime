@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeGaming.Infrastructure",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeGaming.Web", "FreeGaming.Web\FreeGaming.Web.csproj", "{B59499D9-E73B-4BF2-A51D-265C10868597}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeGaming.Services", "FreeGaming.Services\FreeGaming.Services.csproj", "{2745E248-B2DD-4145-A296-DBB8D5049E12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeGaming.Services", "FreeGaming.Services\FreeGaming.Services.csproj", "{2745E248-B2DD-4145-A296-DBB8D5049E12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeGaming.Test", "FreeGaming.Test\FreeGaming.Test.csproj", "{AA79438A-1FCB-4E87-A05B-D1B2A9C7C533}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{2745E248-B2DD-4145-A296-DBB8D5049E12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2745E248-B2DD-4145-A296-DBB8D5049E12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2745E248-B2DD-4145-A296-DBB8D5049E12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA79438A-1FCB-4E87-A05B-D1B2A9C7C533}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA79438A-1FCB-4E87-A05B-D1B2A9C7C533}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA79438A-1FCB-4E87-A05B-D1B2A9C7C533}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA79438A-1FCB-4E87-A05B-D1B2A9C7C533}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
