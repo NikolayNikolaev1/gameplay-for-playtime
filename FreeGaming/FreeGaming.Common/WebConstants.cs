@@ -2,6 +2,7 @@
 {
     public static class WebConstants
     {
+        public const string TempDataSuccessMessageKey = "SuccessMessage";
         public const int UsersPageSize = 10;
 
         public static class AdminCredentials
@@ -22,6 +23,11 @@
         {
             public const string Administrator = "Administrator";
             public const string Publisher = "Publisher";
+        }
+
+        public static class SuccessMessages
+        {
+            public const string PublisherCreation = "Publisher successfully created.";
         }
     }
 }

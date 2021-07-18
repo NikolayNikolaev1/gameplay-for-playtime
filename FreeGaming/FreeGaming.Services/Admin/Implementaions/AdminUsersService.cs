@@ -42,48 +42,26 @@
             var users = this.dbContext
                 .Users
                 .AsQueryable();
-
-            switch (orderDirection)
+            
+            switch (property)
             {
-                case OrderDirectionType.Ascending:
-                    switch (property)
-                    {
-                        case UserProperty.Username:
-                            users = users
-                                .OrderBy(u => u.UserName)
-                                .AsQueryable();
-                            break;
-                        case UserProperty.Email:
-                            users = users
-                                .OrderBy(u => u.Email)
-                                .AsQueryable();
-                            break;
-                        case UserProperty.Raiting:
-                            users = users
-                                .OrderBy(u => u.Rating)
-                                .AsQueryable();
-                            break;
-                    }
+                case UserProperty.Username:
+                    users = (orderDirection == OrderDirectionType.Ascending
+                        ? users.OrderBy(u => u.UserName)
+                        : users.OrderByDescending(u => u.UserName))
+                        .AsQueryable();
                     break;
-                case OrderDirectionType.Descending:
-                    switch (property)
-                    {
-                        case UserProperty.Username:
-                            users = users
-                                .OrderByDescending(u => u.UserName)
-                                .AsQueryable();
-                            break;
-                        case UserProperty.Email:
-                            users = users
-                                .OrderByDescending(u => u.Email)
-                                .AsQueryable();
-                            break;
-                        case UserProperty.Raiting:
-                            users = users
-                                .OrderByDescending(u => u.Rating)
-                                .AsQueryable();
-                            break;
-                    }
+                case UserProperty.Email:
+                    users = (orderDirection == OrderDirectionType.Ascending
+                        ? users.OrderBy(u => u.Email)
+                        : users.OrderByDescending(u => u.Email))
+                        .AsQueryable();
+                    break;
+                case UserProperty.Raiting:
+                    users = (orderDirection == OrderDirectionType.Ascending
+                        ? users.OrderBy(u => u.Rating)
+                        : users.OrderByDescending(u => u.Rating))
+                        .AsQueryable();
                     break;
             }
 

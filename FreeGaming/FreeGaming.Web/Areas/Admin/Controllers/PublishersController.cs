@@ -1,12 +1,14 @@
 ﻿namespace FreeGaming.Web.Areas.Admin.Controllers
 {
     using Data.Models;
+    using Infrastructure.Extensions;
     using Infrastructure.Filters;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Models.Publishers;
     using Services.Admin.Models;
     using Services.Enums;
+    using System;
     using System.Threading.Tasks;
 
     using static Common.WebConstants;
@@ -30,15 +32,23 @@
             {
                 Email = formModel.Email,
                 UserName = formModel.Username,
+                RegistrationDate = DateTime.UtcNow
             };
 
-            await this.userManager.CreateAsync(publisher, formModel.Password);
-            await this.userManager.AddToRoleAsync(publisher, Roles.Publisher);
+            IdentityResult userResult = await this.userManager.CreateAsync(publisher, formModel.Password);
+            IdentityResult roleResult = await this.userManager.AddToRoleAsync(publisher, Roles.Publisher);
+
+            if (!userResult.Succeeded || !roleResult.Succeeded)
+            {
+                return View(formModel);
+            }
+
+            TempData.AddSuccessMessage(SuccessMessages.PublisherCreation);
 
             return RedirectToAction(nameof(Index));
         }
 
-        [Route("/admin/publishers/{property?}/{order?}/{page?}")]
+        [Route("/admin/publishers/{property?}/{order?}/{page?}", Order = 2)]
         public async Task<IActionResult> Index(
             string property = null, string order = "ascending", int page = 1)
             => View(new PublisherListingViewModel
