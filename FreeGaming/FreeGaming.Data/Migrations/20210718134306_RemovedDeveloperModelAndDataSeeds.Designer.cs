@@ -5,11 +5,13 @@ namespace FreeGaming.Data.Migrations
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
     using Microsoft.EntityFrameworkCore.Metadata;
+    using Microsoft.EntityFrameworkCore.Migrations;
 
     [DbContext(typeof(FreeGamingDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210718134306_RemovedDeveloperModelAndDataSeeds")]
+    partial class RemovedDeveloperModelAndDataSeeds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,16 +28,13 @@ namespace FreeGaming.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(3000)
-                        .HasColumnType("nvarchar(3000)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Developer")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Genre")
-                        .HasColumnType("int");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<byte[]>("Image")
                         .HasColumnType("varbinary(max)");
@@ -54,8 +53,8 @@ namespace FreeGaming.Data.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("TrailerId")
                         .IsRequired()
@@ -67,6 +66,41 @@ namespace FreeGaming.Data.Migrations
                     b.HasIndex("PublisherId");
 
                     b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("FreeGaming.Data.Models.GameGenre", b =>
+                {
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GameId", "GenreId");
+
+                    b.HasIndex("GenreId");
+
+                    b.ToTable("GameGenre");
+                });
+
+            modelBuilder.Entity("FreeGaming.Data.Models.Genre", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("FreeGaming.Data.Models.Role", b =>
@@ -328,6 +362,25 @@ namespace FreeGaming.Data.Migrations
                     b.Navigation("Publisher");
                 });
 
+            modelBuilder.Entity("FreeGaming.Data.Models.GameGenre", b =>
+                {
+                    b.HasOne("FreeGaming.Data.Models.Game", "Game")
+                        .WithMany("Genres")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FreeGaming.Data.Models.Genre", "Genre")
+                        .WithMany("Games")
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("Genre");
+                });
+
             modelBuilder.Entity("FreeGaming.Data.Models.UserGame", b =>
                 {
                     b.HasOne("FreeGaming.Data.Models.Game", "Game")
@@ -404,7 +457,14 @@ namespace FreeGaming.Data.Migrations
 
             modelBuilder.Entity("FreeGaming.Data.Models.Game", b =>
                 {
+                    b.Navigation("Genres");
+
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("FreeGaming.Data.Models.Genre", b =>
+                {
+                    b.Navigation("Games");
                 });
 
             modelBuilder.Entity("FreeGaming.Data.Models.Role", b =>

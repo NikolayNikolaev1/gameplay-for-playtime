@@ -38,7 +38,14 @@
             @if (TempData.ContainsKey(TempDataSuccessMessageKey))
             {
                 <div class="alert alert-success">
-                    @TempData["SuccessMessage"]
+                    @TempData[TempDataSuccessMessageKey]
+                </div>
+            }
+
+            @if (TempData.ContainsKey(TempDataErrorMessageKey))
+            {
+                <div class="alert alert-danger">
+                    @TempData[TempDataErrorMessageKey]
                 </div>
             }
             @RenderBody()

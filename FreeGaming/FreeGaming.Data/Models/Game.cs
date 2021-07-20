@@ -1,27 +1,30 @@
 ﻿namespace FreeGaming.Data.Models
 {
+    using Enums;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using static Common.DataConstants;
+    using static Common.DataConstants.GameProperties;
 
     public class Game
     {
         public int Id { get; set; }
 
-        [MaxLength(StringMaxLength)]
+        [MaxLength(TitleMaxLength)]
+        [MinLength(TitleMinLength)]
         [Required]
         public string Title { get; set; }
 
-        [MaxLength(1000)]
+        [MaxLength(DescriptionMaxLength)]
+        [MinLength(DescriptionMinLength)]
         [Required]
         public string Description { get; set; }
 
-        [Range(RangeMinValue, double.MaxValue)]
+        [Range(PriceMinValue, PriceMaxValue)]
         public decimal Price { get; set; }
 
-        [Range(RangeMinValue, double.MaxValue)]
+        [Range(SizeMinValue, SizeMaxValue)]
         // Size in Gb.
         public double Size { get; set; }
 
@@ -29,18 +32,20 @@
 
         public byte[] Image { get; set; }
 
-        [StringLength(11)]
+        [StringLength(TrailerIdLength)]
+        [Required]
         public string TrailerId { get; set; }
 
-        public int DeveloperId { get; set; }
+        [MaxLength(DeveloperMaxLength)]
+        [MinLength(DeveloperMinLength)]
+        [Required]
+        public string Developer { get; set; }
 
-        public Developer Developer { get; set; }
+        public GenreType Genre { get; set; }
 
         public string PublisherId { get; set; }
 
         public User Publisher { get; set; }
-
-        public IEnumerable<GameGenre> Genres { get; set; } = new List<GameGenre>();
 
         public IEnumerable<UserGame> Users { get; set; } = new List<UserGame>();
     }

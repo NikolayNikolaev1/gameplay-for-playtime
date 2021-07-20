@@ -8,25 +8,25 @@
     public class CreatePublisherFormModel
     {
         [Required]
-        [MaxLength(UserNameMaxLength, ErrorMessage = InvalidUserPropertyMaxLength)]
-        [MinLength(UserNameMinLength, ErrorMessage = InvalidUserPropertyMinLength)]
+        [MaxLength(UserNameMaxLength, ErrorMessage = InvalidPropertyMaxLength)]
+        [MinLength(UserNameMinLength, ErrorMessage = InvalidPropertyMinLength)]
         public string Username { get; set; }
 
         [Required]
-        [MaxLength(EmailMaxLength, ErrorMessage = InvalidUserPropertyMaxLength)]
-        [MinLength(EmailMinLength, ErrorMessage = InvalidUserPropertyMinLength)]
+        [MaxLength(EmailMaxLength, ErrorMessage = InvalidPropertyMaxLength)]
+        [MinLength(EmailMinLength, ErrorMessage = InvalidPropertyMinLength)]
         [EmailAddress]
         public string Email { get; set; }
 
         [Required]
-        [MaxLength(PasswordMaxLength, ErrorMessage = InvalidUserPropertyMaxLength)]
-        [MinLength(PasswordMinLength, ErrorMessage = InvalidUserPropertyMinLength)]
+        [MaxLength(PasswordMaxLength, ErrorMessage = InvalidPropertyMaxLength)]
+        [MinLength(PasswordMinLength, ErrorMessage = InvalidPropertyMinLength)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = PasswordsMissmatch)]
         public string ConfirmPassword { get; set; }
     }
 }
