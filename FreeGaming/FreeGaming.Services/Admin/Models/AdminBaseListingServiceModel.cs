@@ -1,6 +1,9 @@
 ﻿namespace FreeGaming.Services.Admin.Models
 {
-    public abstract class AdminBaseListingServiceModel
+    using Data.Models;
+    using Infrastructure.Mapping;
+
+    public abstract class AdminBaseListingServiceModel : IMapFrom<User>
     {
         public string Id { get; set; }
 

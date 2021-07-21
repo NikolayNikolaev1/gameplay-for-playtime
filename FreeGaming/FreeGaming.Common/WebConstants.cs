@@ -4,6 +4,7 @@
     {
         public const string TempDataErrorMessageKey = "ErrorMessage";
         public const string TempDataSuccessMessageKey = "SuccessMessage";
+        public const int GamesPageSize = 5;
         public const int UsersPageSize = 10;
 
         public static class AdminCredentials

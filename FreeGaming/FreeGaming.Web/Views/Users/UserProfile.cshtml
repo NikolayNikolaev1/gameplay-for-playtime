@@ -1,0 +1,12 @@
+﻿@model UserProfileViewModel
+
+@{
+    ViewData["Title"] = $"{Model.UserInfo.Username} Profile";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@foreach (var game in Model.GamesList)
+{
+    <h2>@game.Title</h2>
+}

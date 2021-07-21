@@ -1,6 +1,7 @@
 ﻿namespace FreeGaming.Services.Admin.Implementaions
 {
     using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using Data;
     using Enums;
     using Microsoft.EntityFrameworkCore;
@@ -42,7 +43,7 @@
             var users = this.dbContext
                 .Users
                 .AsQueryable();
-            
+
             switch (property)
             {
                 case UserProperty.Username:
@@ -68,23 +69,22 @@
             switch (role)
             {
                 case UserRoleType.Player:
-                    return await this.mapper
-                        .ProjectTo<TUserListingServiceModel>(
-                            users.Where(u => !u.Roles.Any())
-                            .Skip((page - 1) * UsersPageSize)
-                            .Take(UsersPageSize))
-                            .ToListAsync();
+                    users = users
+                        .Where(u => !u.Roles.Any())
+                        .AsQueryable();
+                    break;
                 case UserRoleType.Publisher:
-                    return await this.mapper
-                        .ProjectTo<TUserListingServiceModel>(
-                            users
-                            .Where(u => u.Roles.Any(r => r.Role.Name == Roles.Publisher))
-                            .Skip((page - 1) * UsersPageSize)
-                            .Take(UsersPageSize))
-                        .ToListAsync();
-                default:
-                    return null;
+                    users = users
+                        .Where(u => u.Roles.Any(r => r.Role.Name == Roles.Publisher))
+                        .AsQueryable();
+                    break;
             }
+
+            return await users
+                .ProjectTo<TUserListingServiceModel>(this.mapper.ConfigurationProvider)
+                .Skip((page - 1) * UsersPageSize)
+                .Take(UsersPageSize)
+                .ToListAsync();
         }
 
         public async Task<int> CountAsync(UserRoleType role)

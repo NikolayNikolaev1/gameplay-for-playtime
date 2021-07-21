@@ -44,7 +44,12 @@
         counter++;
         <tr>
             <td>@counter</td>
-            <td>@publisher.UserName</td>
+            <td>
+                <a asp-area=""
+                   asp-controller="Users"
+                   asp-action="Profile"
+                   asp-route-userId="@publisher.Id">@publisher.UserName</a>
+            </td>
             <td>@publisher.Email</td>
         </tr>
     }
