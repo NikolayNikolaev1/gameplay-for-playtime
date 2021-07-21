@@ -1,25 +1,34 @@
 ﻿namespace FreeGaming.Test.Services.Admin
 {
     using Data.Models;
+    using Fixtures;
     using FluentAssertions;
     using FreeGaming.Services.Admin.Implementaions;
     using FreeGaming.Services.Admin.Models;
     using FreeGaming.Services.Enums;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Xunit;
 
-    public class AdminUsersServiceTest : ServiceTests
+    public class AdminUsersServiceTest : IClassFixture<DatabaseFixture>, IClassFixture<MapperFixture>
     {
+        private readonly DatabaseFixture dbFixture;
+        private readonly MapperFixture mapperFixture;
+
+        public AdminUsersServiceTest(
+            DatabaseFixture dbFixture,
+            MapperFixture mapperFixture)
+        {
+            this.dbFixture = dbFixture;
+            this.mapperFixture = mapperFixture;
+        }
+
         [Fact]
         public async Task AllAsyncShouldReturnAllPublishersWithNoSpecificPropertyOrder()
         {
             // Arrange
-            await this.SeedTestRolesAsync();
-            await this.SeedTestPublishersAsync();
-
-            AdminUsersService adminUsersService = new AdminUsersService(base.DbContext, base.Mapper);
+            AdminUsersService adminUsersService = new AdminUsersService(
+                this.dbFixture.Context, this.mapperFixture.Mapper);
 
             // Act
             var result = await adminUsersService.AllAsync<AdminPublisherListingServiceModel>(
@@ -39,10 +48,8 @@
         public async Task AllAsyncShouldReturnAllPublishersWithAscendingUsernameOrder()
         {
             // Arrange
-            await this.SeedTestRolesAsync();
-            await this.SeedTestPublishersAsync();
-
-            AdminUsersService adminUsersService = new AdminUsersService(base.DbContext, base.Mapper);
+            AdminUsersService adminUsersService = new AdminUsersService(
+                this.dbFixture.Context, this.mapperFixture.Mapper);
 
             // Act
             var result = await adminUsersService.AllAsync<AdminPublisherListingServiceModel>(
@@ -62,10 +69,8 @@
         public async Task AllAsyncShouldReturnAllPublishersWithDescendingUsernameOrder()
         {
             // Arrange
-            await this.SeedTestRolesAsync();
-            await this.SeedTestPublishersAsync();
-
-            AdminUsersService adminUsersService = new AdminUsersService(base.DbContext, base.Mapper);
+            AdminUsersService adminUsersService = new AdminUsersService(
+                this.dbFixture.Context, this.mapperFixture.Mapper);
 
             // Act
             var result = await adminUsersService.AllAsync<AdminPublisherListingServiceModel>(
@@ -85,10 +90,8 @@
         public async Task AllAsyncShouldReturnAllPublishersWithAscendingEmailOrder()
         {
             // Arrange
-            await this.SeedTestRolesAsync();
-            await this.SeedTestPublishersAsync();
-
-            AdminUsersService adminUsersService = new AdminUsersService(base.DbContext, base.Mapper);
+            AdminUsersService adminUsersService = new AdminUsersService(
+                this.dbFixture.Context, this.mapperFixture.Mapper);
 
             // Act
             var result = await adminUsersService.AllAsync<AdminPublisherListingServiceModel>(
@@ -108,10 +111,8 @@
         public async Task AllAsyncShouldReturnAllPublishersWithDescendingEmailOrder()
         {
             // Arrange
-            await this.SeedTestRolesAsync();
-            await this.SeedTestPublishersAsync();
-
-            AdminUsersService adminUsersService = new AdminUsersService(base.DbContext, base.Mapper);
+            AdminUsersService adminUsersService = new AdminUsersService(
+                this.dbFixture.Context, this.mapperFixture.Mapper);
 
             // Act
             var result = await adminUsersService.AllAsync<AdminPublisherListingServiceModel>(
@@ -131,10 +132,8 @@
         public async Task AllAsyncShouldReturnAllUsersWithNoRoleAndWithNoSpecificPropertyOrder()
         {
             // Arrange
-            await this.SeedTestRolesAsync();
-            await this.SeedTestUsersAsync();
-
-            AdminUsersService adminUsersService = new AdminUsersService(base.DbContext, base.Mapper);
+            AdminUsersService adminUsersService = new AdminUsersService(
+                this.dbFixture.Context, this.mapperFixture.Mapper);
 
             // Act
             var result = await adminUsersService.AllAsync<AdminUserListingServiceModel>(
@@ -144,8 +143,8 @@
             result
                 .Should()
                 .Match(r => r.ElementAt(0).Id == "1"
-                    && r.ElementAt(1).Id == "3"
-                    && r.ElementAt(2).Id == "4")
+                    && r.ElementAt(1).Id == "6"
+                    && r.ElementAt(2).Id == "7")
                 .And
                 .HaveCount(3);
         }
@@ -154,10 +153,8 @@
         public async Task AllAsyncShouldReturnAllUsersWithNoRoleAndWithAscendingUsernameOrder()
         {
             // Arrange
-            await this.SeedTestRolesAsync();
-            await this.SeedTestUsersAsync();
-
-            AdminUsersService adminUsersService = new AdminUsersService(base.DbContext, base.Mapper);
+            AdminUsersService adminUsersService = new AdminUsersService(
+                this.dbFixture.Context, this.mapperFixture.Mapper);
 
             // Act
             var result = await adminUsersService.AllAsync<AdminUserListingServiceModel>(
@@ -166,9 +163,9 @@
             // Assert
             result
                 .Should()
-                .Match(r => r.ElementAt(0).UserName == "Alpha"
-                    && r.ElementAt(1).UserName == "Beta"
-                    && r.ElementAt(2).UserName == "Gamma")
+                .Match(r => r.ElementAt(0).UserName == "AlphaUser"
+                    && r.ElementAt(1).UserName == "BetaUser"
+                    && r.ElementAt(2).UserName == "GammaUser")
                 .And
                 .HaveCount(3);
         }
@@ -177,10 +174,8 @@
         public async Task AllAsyncShouldReturnAllUsersWithNoRoleAndWithDescendingUsernameOrder()
         {
             // Arrange
-            await this.SeedTestRolesAsync();
-            await this.SeedTestUsersAsync();
-
-            AdminUsersService adminUsersService = new AdminUsersService(base.DbContext, base.Mapper);
+            AdminUsersService adminUsersService = new AdminUsersService(
+                this.dbFixture.Context, this.mapperFixture.Mapper);
 
             // Act
             var result = await adminUsersService.AllAsync<AdminUserListingServiceModel>(
@@ -189,9 +184,9 @@
             // Assert
             result
                 .Should()
-                .Match(r => r.ElementAt(0).UserName == "Gamma"
-                    && r.ElementAt(1).UserName == "Beta"
-                    && r.ElementAt(2).UserName == "Alpha")
+                .Match(r => r.ElementAt(0).UserName == "GammaUser"
+                    && r.ElementAt(1).UserName == "BetaUser"
+                    && r.ElementAt(2).UserName == "AlphaUser")
                 .And
                 .HaveCount(3);
         }
@@ -200,10 +195,8 @@
         public async Task AllAsyncShouldReturnAllUsersWithNoRoleAndWithAScendingEmailOrder()
         {
             // Arrange
-            await this.SeedTestRolesAsync();
-            await this.SeedTestUsersAsync();
-
-            AdminUsersService adminUsersService = new AdminUsersService(base.DbContext, base.Mapper);
+            AdminUsersService adminUsersService = new AdminUsersService(
+                this.dbFixture.Context, this.mapperFixture.Mapper);
 
             // Act
             var result = await adminUsersService.AllAsync<AdminUserListingServiceModel>(
@@ -212,9 +205,9 @@
             // Assert
             result
                 .Should()
-                .Match(r => r.ElementAt(0).Email == "alpha@test.test"
-                    && r.ElementAt(1).Email == "beta@test.test"
-                    && r.ElementAt(2).Email == "gamma@test.test")
+                .Match(r => r.ElementAt(0).Email == "alphauser@test.test"
+                    && r.ElementAt(1).Email == "betauser@test.test"
+                    && r.ElementAt(2).Email == "gammauser@test.test")
                 .And
                 .HaveCount(3);
         }
@@ -223,10 +216,8 @@
         public async Task AllAsyncShouldReturnAllUsersWithNoRoleAndWithAscendingEmailOrder()
         {
             // Arrange
-            await this.SeedTestRolesAsync();
-            await this.SeedTestUsersAsync();
-
-            AdminUsersService adminUsersService = new AdminUsersService(base.DbContext, base.Mapper);
+            AdminUsersService adminUsersService = new AdminUsersService(
+                this.dbFixture.Context, this.mapperFixture.Mapper);
 
             // Act
             var result = await adminUsersService.AllAsync<AdminUserListingServiceModel>(
@@ -235,9 +226,9 @@
             // Assert
             result
                 .Should()
-                .Match(r => r.ElementAt(0).Email == "gamma@test.test"
-                    && r.ElementAt(1).Email == "beta@test.test"
-                    && r.ElementAt(2).Email == "alpha@test.test")
+                .Match(r => r.ElementAt(0).Email == "gammauser@test.test"
+                    && r.ElementAt(1).Email == "betauser@test.test"
+                    && r.ElementAt(2).Email == "alphauser@test.test")
                 .And
                 .HaveCount(3);
         }
@@ -246,10 +237,8 @@
         public async Task AllAsyncShouldReturnAllUsersWithNoRoleAndWithAscendingRaitingOrder()
         {
             // Arrange
-            await this.SeedTestRolesAsync();
-            await this.SeedTestUsersAsync();
-
-            AdminUsersService adminUsersService = new AdminUsersService(base.DbContext, base.Mapper);
+            AdminUsersService adminUsersService = new AdminUsersService(
+                this.dbFixture.Context, this.mapperFixture.Mapper);
 
             // Act
             var result = await adminUsersService.AllAsync<AdminUserListingServiceModel>(
@@ -269,10 +258,8 @@
         public async Task AllAsyncShouldReturnAllUsersWithNoRoleAndWithDescendingRaitingOrder()
         {
             // Arrange
-            await this.SeedTestRolesAsync();
-            await this.SeedTestUsersAsync();
-
-            AdminUsersService adminUsersService = new AdminUsersService(base.DbContext, base.Mapper);
+            AdminUsersService adminUsersService = new AdminUsersService(
+                this.dbFixture.Context, this.mapperFixture.Mapper);
 
             // Act
             var result = await adminUsersService.AllAsync<AdminUserListingServiceModel>(
@@ -288,18 +275,20 @@
                 .HaveCount(3);
         }
 
-        [Fact]
+        [Fact] // Test need refactoring. Remove for logic in arrange
         public async Task AllAsyncShouldReturnUsersWithNoRoleAndWithNoOrderForSecondPage()
         {
-            for (int i = 1; i <= 15; i++)
+            // Arrange
+            for (int i = 11; i <= 25; i++)
             {
-                await base.DbContext
+                await this.dbFixture.Context
                     .AddAsync(new User { Id = i.ToString() });
             }
 
-            await base.DbContext.SaveChangesAsync();
+            await this.dbFixture.Context.SaveChangesAsync();
 
-            AdminUsersService adminUsersService = new AdminUsersService(base.DbContext, base.Mapper);
+            AdminUsersService adminUsersService = new AdminUsersService(
+                this.dbFixture.Context, this.mapperFixture.Mapper);
 
             // Act
             var result = await adminUsersService.AllAsync<AdminUserListingServiceModel>(
@@ -308,11 +297,11 @@
             // Assert
             result
                 .Should()
-                .Match(r => r.ElementAt(0).Id == "11"
-                    && r.ElementAt(1).Id == "12"
-                    && r.ElementAt(2).Id == "13"
-                    && r.ElementAt(3).Id == "14"
-                    && r.ElementAt(4).Id == "15")
+                .Match(r => r.ElementAt(0).Id == "21"
+                    && r.ElementAt(1).Id == "22"
+                    && r.ElementAt(2).Id == "23"
+                    && r.ElementAt(3).Id == "24"
+                    && r.ElementAt(4).Id == "25")
                 .And
                 .HaveCount(5);
         }
@@ -321,10 +310,8 @@
         public async Task CountAsyncShouldReturnTotalPublishersNumber()
         {
             // Arrange
-            await this.SeedTestRolesAsync();
-            await this.SeedTestPublishersAsync();
-
-            AdminUsersService adminUsersService = new AdminUsersService(base.DbContext, base.Mapper);
+            AdminUsersService adminUsersService = new AdminUsersService(
+                this.dbFixture.Context, this.mapperFixture.Mapper);
 
             // Act
             var result = await adminUsersService
@@ -340,10 +327,8 @@
         public async Task CountAsyncShouldReturnTotalUsersWithNoRoleNumber()
         {
             // Arrange
-            await this.SeedTestRolesAsync();
-            await this.SeedTestUsersAsync();
-
-            AdminUsersService adminUsersService = new AdminUsersService(base.DbContext, base.Mapper);
+            AdminUsersService adminUsersService = new AdminUsersService(
+                this.dbFixture.Context, this.mapperFixture.Mapper);
 
             // Act
             var result = await adminUsersService
@@ -353,100 +338,6 @@
             result
                 .Should()
                 .Equals(3);
-        }
-
-        private async Task SeedTestRolesAsync()
-        {
-            await base.DbContext.AddRangeAsync(
-                new Role { Id = "1", Name = "Administrator" },
-                new Role { Id = "2", Name = "Publisher" });
-
-            await base.DbContext.SaveChangesAsync();
-        }
-
-        private async Task SeedTestPublishersAsync()
-        {
-            await base.DbContext
-                .AddRangeAsync(
-               new User { Id = "1" },
-               new User
-               {
-                   Id = "2",
-                   UserName = "Beta",
-                   Email = "alpha@test.test",
-                   Roles = new List<UserRole>
-                   {
-                        new UserRole
-                        {
-                            UserId = "2",
-                            RoleId = "2"
-                        }
-                   }
-               },
-               new User
-               {
-                   Id = "3",
-                   UserName = "Alpha",
-                   Email = "beta@test.test",
-                   Roles = new List<UserRole>
-                   {
-                        new UserRole
-                        {
-                            UserId = "3",
-                            RoleId = "2"
-                        }
-                   }
-               },
-               new User
-               {
-                   Id = "4",
-                   Roles = new List<UserRole>
-                   {
-                        new UserRole
-                        {
-                            UserId = "4",
-                            RoleId = "1"
-                        }
-                   }
-               },
-               new User
-               {
-                   Id = "5",
-                   UserName = "Gamma",
-                   Email = "gamma@test.test",
-                   Roles = new List<UserRole>
-                   {
-                        new UserRole
-                        {
-                            UserId = "5",
-                            RoleId = "2"
-                        }
-                   }
-               });
-
-            await base.DbContext.SaveChangesAsync();
-        }
-
-        private async Task SeedTestUsersAsync()
-        {
-            await base.DbContext.AddRangeAsync(
-               new User { Id = "1", UserName = "Gamma", Email = "alpha@test.test", Rating = 12 },
-               new User
-               {
-                   Id = "2",
-                   Roles = new List<UserRole>
-                   {
-                        new UserRole
-                        {
-                            UserId = "2",
-                            RoleId = "2"
-                        }
-                   }
-               },
-               new User { Id = "3", UserName = "Alpha", Email = "beta@test.test", Rating = 26 },
-               new User { Id = "4", UserName = "Beta", Email = "gamma@test.test", Rating = 7 });
-
-            await base.DbContext.SaveChangesAsync();
         }
     }
 }

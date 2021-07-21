@@ -28,6 +28,23 @@
         [ValidateModelState]
         public async Task<IActionResult> Create(CreatePublisherFormModel formModel)
         {
+            string publisherUsername = formModel.Username;
+            string publisherEmail = formModel.Email;
+
+            if (await this.userManager.FindByNameAsync(publisherUsername) != null)
+            {
+                ModelState.AddModelError(nameof(formModel.Username),
+                    string.Format(ErrorMessages.PublisherUsernameExists, publisherUsername));
+                return View(formModel);
+            }
+
+            if (await this.userManager.FindByEmailAsync(publisherEmail) != null)
+            {
+                ModelState.AddModelError(nameof(formModel.Email),
+                    string.Format(ErrorMessages.PublisherEmailExists, publisherEmail));
+                return View(formModel);
+            }
+
             User publisher = new User
             {
                 Email = formModel.Email,

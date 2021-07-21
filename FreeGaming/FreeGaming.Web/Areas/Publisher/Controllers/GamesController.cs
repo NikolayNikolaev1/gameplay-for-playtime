@@ -44,9 +44,8 @@
 
             if (titleExists)
             {
-                ModelState.AddModelError("Title", string.Format(
-                    ErrorMessages.GameTitleAlreadyExists, gameTitle));
-
+                ModelState.AddModelError(nameof(formModel.Title),
+                    string.Format(ErrorMessages.GameTitleExists, gameTitle));
                 return View(formModel);
             }
 
@@ -56,16 +55,17 @@
             {
                 var uploadedFile = formModel.Image.FormFile;
                 string uploadedFileName = uploadedFile.FileName;
+                string imageModelKey = nameof(formModel.Image);
 
                 if (!this.FileExtensionValidation(uploadedFileName))
                 {
-                    ModelState.AddModelError(ImageModelKey, ErrorMessages.InvalidImageFileExtension);
+                    ModelState.AddModelError(imageModelKey, ErrorMessages.InvalidImageFileExtension);
                     return View(formModel);
                 }
 
                 if (!this.FileSignatureValidation(uploadedFileName, uploadedFile.OpenReadStream()))
                 {
-                    ModelState.AddModelError(ImageModelKey, ErrorMessages.InvalidImageFileSignature);
+                    ModelState.AddModelError(imageModelKey, ErrorMessages.InvalidImageFileSignature);
                     return View(formModel);
                 }
 
@@ -78,7 +78,7 @@
                 }
                 else
                 {
-                    ModelState.AddModelError(ImageModelKey, ErrorMessages.InvalidImageFileLength);
+                    ModelState.AddModelError(imageModelKey, ErrorMessages.InvalidImageFileLength);
                     return View(formModel);
                 }
             }
