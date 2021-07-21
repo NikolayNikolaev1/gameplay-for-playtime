@@ -1,12 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FreeGaming.Test.Services
+﻿namespace FreeGaming.Test.Services
 {
-    class GameServiceTest
+    using System.Threading.Tasks;
+    using Xunit;
+
+    public class GameServiceTest
     {
+
+        [Fact]
+        public async Task ContainsAsyncShouldReturnTrue()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+        }
+
+        [Fact]
+        public async Task ContainsAsyncShouldReturnFalse()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+        }
     }
 }

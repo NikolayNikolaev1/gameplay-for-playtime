@@ -21,4 +21,8 @@
     <ProjectReference Include="..\FreeGaming.Web\FreeGaming.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Publisher\" />
+  </ItemGroup>
+
 </Project>
