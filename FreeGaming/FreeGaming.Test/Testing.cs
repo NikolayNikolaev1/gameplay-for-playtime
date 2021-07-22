@@ -11,7 +11,6 @@
 
     using static Common.GlobalConstants;
     // TODO: Look into more detailed clean code infrastructure around Fixtures in xUnit.
-    // Source: https://www.youtube.com/watch?v=2UJ7mAtFuio
     public class Testing
     {
         private static IConfigurationRoot _configuration;

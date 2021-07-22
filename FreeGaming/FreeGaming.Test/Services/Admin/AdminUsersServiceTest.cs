@@ -10,7 +10,8 @@
     using System.Threading.Tasks;
     using Xunit;
 
-    public class AdminUsersServiceTest : IClassFixture<DatabaseFixture>, IClassFixture<MapperFixture>
+    [Collection("Service Collection")]
+    public class AdminUsersServiceTest
     {
         private readonly DatabaseFixture dbFixture;
         private readonly MapperFixture mapperFixture;

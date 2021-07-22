@@ -10,7 +10,7 @@
             this.InitializeMapper();
         }
 
-        public IMapper Mapper { get; set; }
+        public IMapper Mapper { get; private set; }
 
         private void InitializeMapper()
             => this.Mapper = new MapperConfiguration(

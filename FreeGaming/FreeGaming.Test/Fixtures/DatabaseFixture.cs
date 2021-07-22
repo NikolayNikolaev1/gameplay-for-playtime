@@ -5,6 +5,8 @@
     using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public class DatabaseFixture
     {
         public DatabaseFixture()
@@ -13,10 +15,18 @@
             // Initialize data.
             this.SeedTestRoles();
             this.SeedTestUsers();
-
+            this.SeedTestGames();
+            this.SeedTestUserGames();
         }
 
         public FreeGamingDbContext Context { get; private set; }
+
+        public async Task AddAsync<TEntity>(TEntity entity)
+           where TEntity : class
+        {
+            await this.Context.AddAsync(entity);
+            await this.Context.SaveChangesAsync();
+        }
 
         private void InitializeDatabase()
             => this.Context = new FreeGamingDbContext(
@@ -100,7 +110,46 @@
 
         private void SeedTestGames()
         {
+            this.Context
+                .AddRange(
+                new Game
+                {
+                    Id = 1,
+                    Title = "Alpha Game",
+                    PublisherId = "2"
+                },
+                new Game
+                {
+                    Id = 2,
+                    Title = "Beta Game",
+                    PublisherId = "2"
+                },
+                new Game
+                {
+                    Id = 3,
+                    Title = "Gamma Game",
+                    PublisherId = "3"
+                });
 
+            this.Context.SaveChanges();
+        }
+
+        private void SeedTestUserGames()
+        {
+            this.Context
+                .AddRange(
+                new UserGame
+                {
+                    UserId = "1",
+                    GameId = 1
+                },
+                new UserGame
+                {
+                    UserId = "1",
+                    GameId = 3
+                });
+
+            this.Context.SaveChanges();
         }
     }
 }
