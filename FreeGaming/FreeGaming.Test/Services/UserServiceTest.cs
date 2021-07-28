@@ -1,32 +1,23 @@
 ﻿namespace FreeGaming.Test.Services
 {
-    using Fixtures;
     using FluentAssertions;
     using FreeGaming.Services.Implementaions;
     using FreeGaming.Services.Models.Users;
     using System.Threading.Tasks;
     using Xunit;
 
-    [Collection("Service Collection")]
     public class UserServiceTest
     {
-        private readonly DatabaseFixture dbFixture;
-        private readonly MapperFixture mapperFixture;
-
-        public UserServiceTest(
-            DatabaseFixture dbFixture,
-            MapperFixture mapperFixture)
-        {
-            this.dbFixture = dbFixture;
-            this.mapperFixture = mapperFixture;
-        }
-
         [Fact]
         public async Task ProfileAsyncShouldreturnCorrectUserProfileInfo()
         {
             // Arrange
-            UserService userService = new UserService(
-                this.dbFixture.Context, this.mapperFixture.Mapper);
+            var dbContext = Testing.CreateDatabaseContext();
+            var mapper = Testing.CreateMapper();
+
+            await Testing.SeedUsersWithRolesTestDataAsync(dbContext);
+
+            UserService userService = new UserService(dbContext, mapper);
 
             // Act
             var result = await userService.ProfileAsync<UserProfileServiceModel>("1");
@@ -38,11 +29,15 @@
         }
 
         [Fact]
-        public async Task ProfileAsyncShouldreturnCorrectPublisherProfileInfo()
+        public async Task ProfileAsyncShouldReturnCorrectPublisherProfileInfo()
         {
             // Arrange
-            UserService userService = new UserService(
-                this.dbFixture.Context, this.mapperFixture.Mapper);
+            var dbContext = Testing.CreateDatabaseContext();
+            var mapper = Testing.CreateMapper();
+
+            await Testing.SeedUsersWithRolesTestDataAsync(dbContext);
+
+            UserService userService = new UserService(dbContext, mapper);
 
             // Act
             var result = await userService.ProfileAsync<UserProfileServiceModel>("2");

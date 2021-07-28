@@ -1,32 +1,25 @@
 ﻿namespace FreeGaming.Test.Services
 {
     using Data.Models;
-    using Fixtures;
     using FluentAssertions;
+    using FreeGaming.Data;
     using FreeGaming.Services.Implementaions;
     using System.Threading.Tasks;
     using Xunit;
 
-    [Collection("Service Collection")]
     public class GameServiceTest
     {
-        private readonly DatabaseFixture dbFixture;
-        private readonly MapperFixture mapperFixture;
-
-        public GameServiceTest(
-            DatabaseFixture dbFixture,
-            MapperFixture mapperFixture)
-        {
-            this.dbFixture = dbFixture;
-            this.mapperFixture = mapperFixture;
-        }
-
         [Fact]
         public async Task AllAsyncShouldReturnAllGames()
         {
             // Arrange
-            GameService gameService = new GameService(
-                this.dbFixture.Context, this.mapperFixture.Mapper);
+            var dbContext = Testing.CreateDatabaseContext();
+            var mapper = Testing.CreateMapper();
+
+            await Testing.SeedUsersWithRolesTestDataAsync(dbContext);
+            await this.SeedGamesTestDataAsync(dbContext);
+
+            GameService gameService = new GameService(dbContext, mapper);
 
             // Act
             var result = await gameService.AllAsync();
@@ -47,8 +40,13 @@
         public async Task AllAsyncShouldReturnAllPublishedGamesByPublisher()
         {
             // Arrange
-            GameService gameService = new GameService(
-                this.dbFixture.Context, this.mapperFixture.Mapper);
+            var dbContext = Testing.CreateDatabaseContext();
+            var mapper = Testing.CreateMapper();
+
+            await Testing.SeedUsersWithRolesTestDataAsync(dbContext);
+            await this.SeedGamesTestDataAsync(dbContext);
+
+            GameService gameService = new GameService(dbContext, mapper);
 
             // Act
             var result = await gameService.AllAsync("2");
@@ -67,8 +65,13 @@
         public async Task AllAsyncShouldReturnAllUserGames()
         {
             // Arrange
-            GameService gameService = new GameService(
-                this.dbFixture.Context, this.mapperFixture.Mapper);
+            var dbContext = Testing.CreateDatabaseContext();
+            var mapper = Testing.CreateMapper();
+
+            await Testing.SeedUsersWithRolesTestDataAsync(dbContext);
+            await this.SeedGamesTestDataAsync(dbContext);
+
+            GameService gameService = new GameService(dbContext, mapper);
 
             // Act
             var result = await gameService.AllAsync("1");
@@ -87,10 +90,13 @@
         public async Task ContainsAsyncShouldReturnTrue()
         {
             // Arrange
-            await this.dbFixture.AddAsync(new Game { Title = "Test Game" });
+            var dbContext = Testing.CreateDatabaseContext();
+            var mapper = Testing.CreateMapper();
 
-            GameService gameService = new GameService(
-                this.dbFixture.Context, this.mapperFixture.Mapper);
+            await Testing.SeedUsersWithRolesTestDataAsync(dbContext);
+            await this.SeedGamesTestDataAsync(dbContext);
+
+            GameService gameService = new GameService(dbContext, mapper);
 
             // Act
             bool result = await gameService.ContainsAsync("Test Game");
@@ -105,8 +111,13 @@
         public async Task ContainsAsyncShouldReturnFalse()
         {
             // Arrange
-            GameService gameService = new GameService(
-                this.dbFixture.Context, this.mapperFixture.Mapper);
+            var dbContext = Testing.CreateDatabaseContext();
+            var mapper = Testing.CreateMapper();
+
+            await Testing.SeedUsersWithRolesTestDataAsync(dbContext);
+            await this.SeedGamesTestDataAsync(dbContext);
+
+            GameService gameService = new GameService(dbContext, mapper);
 
             // Act
             bool result = await gameService.ContainsAsync("Test");
@@ -115,6 +126,22 @@
             result
                 .Should()
                 .BeFalse();
+        }
+
+        private async Task SeedGamesTestDataAsync(FreeGamingDbContext dbContext)
+        {
+            await dbContext.AddRangeAsync(
+                new Game { Id = 1, Title = "Test Game" },
+                new Game { Id = 2 },
+                new Game { Id = 3 });
+
+            await dbContext.AddRangeAsync(
+                new UserGame { UserId = "2", GameId = 1 },
+                new UserGame { UserId = "2", GameId = 2 },
+                new UserGame { UserId = "1", GameId = 1 },
+                new UserGame { UserId = "1", GameId = 3 });
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }

@@ -5,8 +5,59 @@
 }
 
 <h1>@ViewData["Title"]</h1>
+<hr />
 
-@foreach (var game in Model.GamesList)
-{
-    <h2>@game.Title</h2>
-}
+<div class="row border">
+    <div class="col">
+
+        <div class="row">
+            <div class="col text-center">
+                <h2>Game List</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 offset-md-2 border">
+                @foreach (var game in Model.GamesList)
+                {
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img src="@ConvertToString(game.Image)" alt="@game.Title" class="img-thumbnail" />
+                        </div>
+
+                        <div class="col-md-6 pt-5">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>@game.Title</h3>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <h3>@game.Developer</h3>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <h3>@game.Genre</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 pt-5">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>$@game.Price</h3>
+                                </div>
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <h3>@game.Size GB</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -37,7 +37,7 @@
                 return NotFound();
             }
 
-            bool isPublisher = user.Roles.Any(r => r.Role.Name.Equals(Roles.Publisher));
+            bool isPublisher = await this.userManager.IsInRoleAsync(user, Roles.Publisher);
             // Return publisher page for publisher or user profile for users.
             return isPublisher
                 ? View("PublisherProfile", new PublisherProfileViewModel

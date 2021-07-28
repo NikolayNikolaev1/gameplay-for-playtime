@@ -36,14 +36,13 @@
 
                 Task.Run(async () =>
                 {
-                    //var roleNames = typeof(Roles).GetFields();
-                    //// Using reflection to get all roles and add them to db.
-                    //foreach (var roleName in roleNames)
-                    //{
-                    //    await CreateRoleAsync(userManager, roleManager, roleName.Name);
-                    //}
-                    
-                    // TODO: Refactor role creating, going to create only admin here for now.
+                    var roleNames = typeof(Roles).GetFields();
+                    // Using reflection to get all roles and add them to db.
+                    foreach (var roleName in roleNames)
+                    {
+                        await CreateRoleAsync(userManager, roleManager, roleName.Name);
+                    }
+
                     await CreateRoleAsync(userManager, roleManager, Roles.Administrator);
                 }).Wait();
             }
